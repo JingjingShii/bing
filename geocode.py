@@ -3,6 +3,7 @@ import sys
 import json
 import os
 from mlhub.pkg import ask_password
+import argparse
 
 # config file stores credentials including the Bing Maps key required by the geocoding function
 CONFIG_FILE = "config.json"
@@ -26,21 +27,16 @@ with open(CONFIG_FILE) as f:
 BING_MAPS_KEY = config["bing_maps_key"]
 
 
-# The geocoding function that gets latitude and longitude coordinates of the address
-def geocode(address):
-    # Bing Maps API endpoint for Australian addresses
-    API_URL = "http://dev.virtualearth.net/REST/v1/Locations?culture=en-AU"
+# ----------------------------------------------------------------------
+# The geocoding function that gets latitude and longitude coordinates of
+# the address
+# ----------------------------------------------------------------------
 
-    # Build query string
-    query_string = (
-            API_URL
-            + "&query="
-            + address
-            + "&inclnb=1&include=queryParse&userRegion=AU&key="
-            + BING_MAPS_KEY
-    )
+def geocode(address, inclnb="0", maxres="1"):
+    # Bing Maps API endpoint for Australian addresses
+    API_URL = (f'http://dev.virtualearth.net/REST/v1/Locations?culture=en-AU&query={address}&inclnb={inclnb}&include=queryParse&maxResults={maxres}&userRegion=AU&key={BING_MAPS_KEY}')
     # Get JSON response from Bing Maps API
-    response = requests.get(query_string).json()
+    response = requests.get(API_URL).json()
     # Get the latitude and longitude coordinates from the JSON response
     coords = response["resourceSets"][0]["resources"][0]["point"]["coordinates"]
 
@@ -48,11 +44,19 @@ def geocode(address):
 
 
 if __name__ == "__main__":
-    # Read the input address
-    address = " ".join(sys.argv[1:])
+    parser = argparse.ArgumentParser(description='Running Bing Map.')
 
+    parser.add_argument('address', type=str, nargs='+',
+                        help='The location that want to query.')
+    parser.add_argument('--inclnb', type=int, default=0, required=False,
+                        help='Include the neighborhood with the address information. 0 or 1. ')
+    parser.add_argument('--maxres', type=int, default=5, required=False,
+                        help='Maximun number of locations to return. The value is between 1-20.')
+    args = parser.parse_args()
+
+    address = " ".join(args.address)
     # Perform geocoding on the address to get its latitude and longitude coordinates
-    coords = geocode(address)
+    coords = geocode(address, args.inclnb, args.maxres)
 
     # Print the latitude and longitude coordinates
     print(coords)
