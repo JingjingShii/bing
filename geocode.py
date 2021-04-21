@@ -27,7 +27,7 @@ BING_MAPS_KEY = config["bing_maps_key"]
 
 
 # The geocoding function that gets latitude and longitude coordinates of the address
-def geocode(address, bing_maps_key):
+def geocode(address):
     # Bing Maps API endpoint for Australian addresses
     API_URL = "http://dev.virtualearth.net/REST/v1/Locations?culture=en-AU"
 
@@ -37,7 +37,7 @@ def geocode(address, bing_maps_key):
             + "&query="
             + address
             + "&inclnb=1&include=queryParse&userRegion=AU&key="
-            + bing_maps_key
+            + BING_MAPS_KEY
     )
     # Get JSON response from Bing Maps API
     response = requests.get(query_string).json()
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     address = " ".join(sys.argv[1:])
 
     # Perform geocoding on the address to get its latitude and longitude coordinates
-    coords = geocode(address, BING_MAPS_KEY)
+    coords = geocode(address)
 
     # Print the latitude and longitude coordinates
     print(coords)
