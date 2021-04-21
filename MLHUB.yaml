@@ -1,0 +1,21 @@
+--- # Azure Speech
+meta:
+  name         : bing
+  title        : Bing Map.
+  keywords     : bing map, location
+  version      : 0.0.1
+  languages    : py
+  license      : mit
+  author       : Jingjing.Shi@anu.edu.au
+  url          : https://github.com/JingjingShii/bing
+dependencies:
+
+  files:
+    - https://mlhub.ai/empty.json: config.json
+    - README.md
+    - demo.py
+    - geocode.py
+commands:
+  demo       : Demonstrate bing map.
+  geocode    : Generate latitude and longitude coordinates for location
+
