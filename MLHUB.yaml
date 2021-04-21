@@ -11,7 +11,7 @@ meta:
 dependencies:
 
   files:
-    - https://mlhub.ai/empty.json: config.json
+    - config.json
     - README.md
     - demo.py
     - geocode.py
