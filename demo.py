@@ -36,8 +36,8 @@ with open(CONFIG_FILE) as f:
 BING_MAPS_KEY = config["bing_maps_key"]
 
 mlcat("GEOCODE","""
-This part is to get the latitude and longitude coordinates based on the query,
-we set the query to Priceline Pharmacy Albany Creek. You will see its coordinates. 
+This part is to generate the latitude and longitude coordinates based on the query.
+Here we set the query to Priceline Pharmacy Albany Creek. You will see its coordinates. 
 """)
 
 mlask(end="\n")
