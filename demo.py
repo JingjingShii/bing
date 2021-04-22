@@ -20,13 +20,32 @@ mlask(end="\n")
 # config file stores credentials including the Bing Maps key required by the geocoding function
 CONFIG_FILE = "config.json"
 
-if not os.path.exists("config.json") or not os.path.getsize("config.json"):
-    print("Please paste your bing map key here:")
-    map_key = ask_password()
+path = os.path.join(os.getcwd(), "config.json")
+
+if not os.path.getsize("config.json"):
+
+    msg = "Please paste your bing map key here:"
+
+    msg_saved = """
+    That information has been saved into the file:
+
+        {}
+    """.format(path)
+
+    msg_request = f"""\
+Bing Map key is required to access this service (and to run this command).
+See the README for details of a free key. If you have a key
+then please paste the key here. 
+"""
+    print(msg_request, file=sys.stderr)
+    map_key = ask_password(prompt=msg)
     data = {}
-    data["bing_maps_key"] = map_key
-    with open("config.json", "w") as outfile:
-        json.dump(data, outfile)
+
+    if len(map_key) >0:
+        data["bing_maps_key"] = map_key
+        with open("config.json", "w") as outfile:
+            json.dump(data, outfile)
+        print(msg_saved, file=sys.stderr)
 
 # Read credentials from config file
 with open(CONFIG_FILE) as f:
@@ -49,9 +68,10 @@ mlask(end="\n")
 # be erased. The users need to paste their key again.
 # ----------------------------------------------------------------------
 try:
-    location = geocode("Priceline Pharmacy Albany Creek", "0", "5")
+    location = geocode("Priceline Pharmacy Albany Creek", BING_MAPS_KEY, "0", "5")
+
 except Exception as e:
-    print("The bing map key is not correct. Please past it again.")
+    print("The bing map key is not correct. Please run and paste the key again.")
     file = open("config.json", "r+")
     file.truncate(0)
     file.close()
