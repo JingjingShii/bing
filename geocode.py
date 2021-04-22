@@ -5,6 +5,7 @@ import os
 from mlhub.pkg import ask_password
 import argparse
 
+
 # ----------------------------------------------------------------------
 # The geocoding function that gets a list of potential latitude and longitude
 # coordinates lists of the address
@@ -14,12 +15,13 @@ def geocode(address, bing_map_key, inclnb="0", maxres="1"):
     result = []
 
     # Bing Maps API endpoint for Australian addresses
-    API_URL = (f'http://dev.virtualearth.net/REST/v1/Locations?culture=en-AU&query={address}&inclnb={inclnb}&include=queryParse&maxResults={maxres}&userRegion=AU&key={bing_map_key}')
+    API_URL = (
+        f'http://dev.virtualearth.net/REST/v1/Locations?culture=en-AU&query={address}&inclnb={inclnb}&include=queryParse&maxResults={maxres}&userRegion=AU&key={bing_map_key}')
 
     # Get JSON response from Bing Maps API
     response = requests.get(API_URL).json()
 
-    # If the result is 1 or more than 1
+    # If the estimatedTotal is 1 or more than 1
     if response["resourceSets"][0]['estimatedTotal'] > 0:
 
         location_list = response["resourceSets"][0]["resources"]
