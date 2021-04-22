@@ -58,7 +58,10 @@ location. Each coordinate pair includes latitude and longitude. If the provided
 location is specific, the result will be a list with one element. If the location
 is ambiguous, such as a duplicate name in Australia, a list with several elements 
 will be shown. It has the option to specify the maximum number of coordinates to 
-return in the response. The number is between 1-20, and the default is 5. 
+return in the response. The number is between 1-20, and the default is 5. Also,
+this service provides the option to include the neighborhood with the address
+information the response when it is available. The default is 0 (Do not include
+neighborhood information.)
 
 ```console
 $ ml geocode bing PriceLine Pharmacy Albany Creek
