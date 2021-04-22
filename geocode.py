@@ -41,8 +41,6 @@ def geocode(address, inclnb="0", maxres="1"):
     # Get JSON response from Bing Maps API
     response = requests.get(API_URL).json()
 
-    print(response)
-
     # If the result is 1 or more than 1
     if response["resourceSets"][0]['estimatedTotal'] > 0:
 
