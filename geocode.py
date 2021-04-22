@@ -28,19 +28,34 @@ BING_MAPS_KEY = config["bing_maps_key"]
 
 
 # ----------------------------------------------------------------------
-# The geocoding function that gets latitude and longitude coordinates of
-# the address
+# The geocoding function that gets a list of potential latitude and longitude
+# coordinates lists of the address
 # ----------------------------------------------------------------------
 
 def geocode(address, inclnb="0", maxres="1"):
+    result = []
+
     # Bing Maps API endpoint for Australian addresses
     API_URL = (f'http://dev.virtualearth.net/REST/v1/Locations?culture=en-AU&query={address}&inclnb={inclnb}&include=queryParse&maxResults={maxres}&userRegion=AU&key={BING_MAPS_KEY}')
+
     # Get JSON response from Bing Maps API
     response = requests.get(API_URL).json()
-    # Get the latitude and longitude coordinates from the JSON response
-    coords = response["resourceSets"][0]["resources"][0]["point"]["coordinates"]
 
-    return coords
+    print(response)
+
+    # If the result is 1 or more than 1
+    if response["resourceSets"][0]['estimatedTotal'] > 0:
+
+        location_list = response["resourceSets"][0]["resources"]
+
+        for item in location_list:
+            result.append(item["point"]["coordinates"])
+
+    else:
+        print("No coordinates can be queried for this location. Please make sure you have the correct location.")
+        sys.exit(1)
+
+    return result
 
 
 if __name__ == "__main__":
