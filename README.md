@@ -60,8 +60,8 @@ is ambiguous, such as a duplicate name in Australia, a list with several element
 will be shown. It has the option to specify the maximum number of coordinates to 
 return in the response. The number is between 1-20, and the default is 5. Also,
 this service provides the option to include the neighborhood with the address
-information the response when it is available. The default is 0 (Do not include
-neighborhood information.)
+information when it is available. The default is 0 (Do not include neighborhood
+information).
 
 ```console
 $ ml geocode bing PriceLine Pharmacy Albany Creek
