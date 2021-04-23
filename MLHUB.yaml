@@ -12,7 +12,6 @@ meta:
 dependencies:
 
   files:
-    - private.json
     - README.md
     - demo.py
     - geocode.py
