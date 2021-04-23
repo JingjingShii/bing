@@ -48,7 +48,7 @@ def geocode(address, bing_map_key, inclnb="0", maxres="1", google = False):
 if __name__ == "__main__":
     # config file stores credentials including the Bing Maps key required by the geocoding function
     CONFIG_FILE = "private.json"
-    path = os.path.join(os.getcwd(), "config.json")
+    path = os.path.join(os.getcwd(), "private.json")
 
     if not os.path.getsize("private.json"):
 

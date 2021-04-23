@@ -20,7 +20,7 @@ mlask(end="\n")
 # config file stores credentials including the Bing Maps key required by the geocoding function
 CONFIG_FILE = "private.json"
 
-path = os.path.join(os.getcwd(), "config.json")
+path = os.path.join(os.getcwd(), "private.json")
 
 if not os.path.getsize("private.json"):
 
@@ -64,7 +64,7 @@ of coordinates.
 mlask(end="\n")
 
 # ----------------------------------------------------------------------
-# If the bing map key is not correct, the content in config.json will
+# If the bing map key is not correct, the content in private.json will
 # be erased. The users need to paste their key again.
 # ----------------------------------------------------------------------
 try:
