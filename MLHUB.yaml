@@ -12,7 +12,7 @@ meta:
 dependencies:
 
   files:
-    - config.json
+    - private.json
     - README.md
     - demo.py
     - geocode.py
