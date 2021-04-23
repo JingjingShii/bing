@@ -11,12 +11,12 @@ import argparse
 # coordinates lists of the address
 # ----------------------------------------------------------------------
 
-def geocode(address, bing_map_key, inclnb="0", maxres="1"):
+def geocode(address, bing_map_key, inclnb="0", maxres="1", google = False):
     result = []
 
     # Bing Maps API endpoint for Australian addresses
     API_URL = (
-        f'http://dev.virtualearth.net/REST/v1/Locations?culture=en-AU&query={address}&inclnb={inclnb}&include=queryParse&maxResults={maxres}&userRegion=AU&key={bing_map_key}')
+        f"http://dev.virtualearth.net/REST/v1/Locations?culture=en-AU&query={address}&inclnb={inclnb}&include=queryParse&maxResults={maxres}&userRegion=AU&key={bing_map_key}")
 
     # Get JSON response from Bing Maps API
     response = requests.get(API_URL).json()
@@ -33,15 +33,24 @@ def geocode(address, bing_map_key, inclnb="0", maxres="1"):
         print("No coordinates can be queried for this location. Please make sure you have the correct location.")
         sys.exit(1)
 
+
+    if google:
+        google_out = []
+        for item in result:
+            link = f"https://maps.google.com/?q={item[0]},{item[1]}"
+            google_out.append(link)
+        return google_out
+
+
     return result
 
 
 if __name__ == "__main__":
     # config file stores credentials including the Bing Maps key required by the geocoding function
-    CONFIG_FILE = "config.json"
+    CONFIG_FILE = "private.json"
     path = os.path.join(os.getcwd(), "config.json")
 
-    if not os.path.getsize("config.json"):
+    if not os.path.getsize("private.json"):
 
         msg = "Please paste your bing map key here:"
 
@@ -62,7 +71,7 @@ then please paste the key here.
 
         if len(map_key) > 0:
             data["bing_maps_key"] = map_key
-            with open("config.json", "w") as outfile:
+            with open("private.json", "w") as outfile:
                 json.dump(data, outfile)
             print(msg_saved, file=sys.stderr)
 
@@ -81,15 +90,17 @@ then please paste the key here.
                         help='Include the neighborhood with the address information. 0 or 1. ')
     parser.add_argument('--maxres', type=int, default=5, required=False,
                         help='Maximun number of locations to return. The value is between 1-20.')
+    parser.add_argument('--google', type=bool,
+                        help='Show the location in the Google Map.')
     args = parser.parse_args()
 
     address = " ".join(args.address)
 
     try:
-        location = geocode(address, BING_MAPS_KEY, args.inclnb, args.maxres)
+        location = geocode(address, BING_MAPS_KEY, args.inclnb, args.maxres, args.google)
     except Exception as e:
         print("The bing map key is not correct. Please run and paste the key again.")
-        file = open("config.json", "r+")
+        file = open("private.json", "r+")
         file.truncate(0)
         file.close()
         sys.exit(1)

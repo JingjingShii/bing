@@ -18,11 +18,11 @@ mlask(end="\n")
 # ----------------------------------------------------------------------
 
 # config file stores credentials including the Bing Maps key required by the geocoding function
-CONFIG_FILE = "config.json"
+CONFIG_FILE = "private.json"
 
 path = os.path.join(os.getcwd(), "config.json")
 
-if not os.path.getsize("config.json"):
+if not os.path.getsize("private.json"):
 
     msg = "Please paste your bing map key here:"
 
@@ -43,7 +43,7 @@ then please paste the key here.
 
     if len(map_key) >0:
         data["bing_maps_key"] = map_key
-        with open("config.json", "w") as outfile:
+        with open("private.json", "w") as outfile:
             json.dump(data, outfile)
         print(msg_saved, file=sys.stderr)
 
@@ -68,11 +68,11 @@ mlask(end="\n")
 # be erased. The users need to paste their key again.
 # ----------------------------------------------------------------------
 try:
-    location = geocode("Priceline Pharmacy Albany Creek", BING_MAPS_KEY, "0", "5")
+    location = geocode("Priceline Pharmacy Albany Creek", BING_MAPS_KEY, "0", "5", False)
 
 except Exception as e:
     print("The bing map key is not correct. Please run and paste the key again.")
-    file = open("config.json", "r+")
+    file = open("private.json", "r+")
     file.truncate(0)
     file.close()
     sys.exit(1)
