@@ -24,7 +24,7 @@ The Bing Map source code is available from
 
 $ ml geocode bing back creek
 $ ml geocode bing back creek --maxres 3
-$ ml geocode bing back creek --maxres 3 --inclnb 1
+$ ml geocode bing back creek --inclnb 1
 ```
 
 ## Usage
@@ -65,8 +65,8 @@ information).
 
 ```console
 $ ml geocode bing PriceLine Pharmacy Albany Creek
-$ ml geocode bing back reek --maxres 5
-$ ml geocode bing back reek --maxres 5 --inclnb 1
+$ ml geocode bing back reek --maxres 3
+$ ml geocode bing back reek --inclnb 1
 ```
 
 ## Demonstration
