@@ -7,52 +7,48 @@ import csv
 
 
 # ----------------------------------------------------------------------
-# The geocoding function that gets a list of potential latitude and longitude
+# The geocoding function that generates a list of potential latitude and longitude
 # coordinates lists of the address
 # ----------------------------------------------------------------------
 
-def geocode(address, bing_map_key, to, inclnb="0", maxres="1", google=False):
+def geocode(address, bing_map_key, inclnb="0", maxres="1", google=False):
+    result = []
+    for item in address:
+        loc_res = []
 
-    to_path = os.path.join(os.getcwd(), to)
+        # Bing Maps API endpoint for Australian addresses
+        API_URL = (
+            f"http://dev.virtualearth.net/REST/v1/Locations?culture=en-AU&query={item}&inclnb={inclnb}&include=queryParse&maxResults={maxres}&userRegion=AU&key={bing_map_key}")
 
-    with open(to_path, 'w', newline='') as file:
+        # Get JSON response from Bing Maps API
+        response = requests.get(API_URL).json()
 
-        writer = csv.writer(file)
+        # If the estimatedTotal is 1 or more than 1
+        if response["resourceSets"][0]['estimatedTotal'] > 0:
 
-        for item in address:
-            result = []
+            loc_inform = response["resourceSets"][0]["resources"]
 
-            # Bing Maps API endpoint for Australian addresses
-            API_URL = (
-                f"http://dev.virtualearth.net/REST/v1/Locations?culture=en-AU&query={item}&inclnb={inclnb}&include=queryParse&maxResults={maxres}&userRegion=AU&key={bing_map_key}")
+            cell = ""
+            for item in loc_inform:
+                latitude = item["point"]["coordinates"][0]
+                longitutde = item["point"]["coordinates"][1]
 
-            # Get JSON response from Bing Maps API
-            response = requests.get(API_URL).json()
+                if google:
+                    link = f"https://maps.google.com/?q={latitude},{longitutde}"
+                    cell = str(latitude) + "," + str(longitutde) + "," + link
+                else:
+                    cell = str(latitude) + "," + str(longitutde)
 
-            # If the estimatedTotal is 1 or more than 1
-            if response["resourceSets"][0]['estimatedTotal'] > 0:
+                loc_res.append(cell)
 
-                loc_list = response["resourceSets"][0]["resources"]
+        else:
+            print(
+                "No coordinates can be queried for this location. Please make sure you have the correct location.")
+            sys.exit(1)
 
-                cell = ""
-                for item in loc_list:
-                    latitude = item["point"]["coordinates"][0]
-                    longitutde = item["point"]["coordinates"][1]
+        result.append(loc_res)
 
-                    if google:
-                        link = f"https://maps.google.com/?q={latitude},{longitutde}"
-                        cell = str(latitude) + "," + str(longitutde) + "," + link
-                    else:
-                        cell = str(latitude) + "," + str(longitutde)
-
-                    result.append(cell)
-
-            else:
-                print(
-                    "No coordinates can be queried for this location. Please make sure you have the correct location.")
-                sys.exit(1)
-
-            writer.writerow(result)
+    return result
 
 
 if __name__ == "__main__":
@@ -106,13 +102,20 @@ if __name__ == "__main__":
         location_list.append(address)
 
     try:
-        geocode(location_list, BING_MAPS_KEY, args.to, args.inclnb, args.maxres, args.google)
-        if args.verbose:
+        result = geocode(location_list, BING_MAPS_KEY, args.inclnb, args.maxres, args.google)
+
+        # If the output file name is given
+        if args.to:
             to_path = os.path.join(os.getcwd(), args.to)
-            with open(to_path) as f:
-                csv_reader = csv.reader(f, delimiter=',')
-                for item in csv_reader:
-                    print(item)
+            with open(to_path, 'w', newline='') as file:
+                writer = csv.writer(file)
+                for item in result:
+                    writer.writerow(item)
+
+        # If the users want to print out the result
+        if args.verbose:
+            for item in result:
+                print(item)
 
     except Exception as e:
         print("The bing map key is not correct. Please run ml configure bing to update your key", file=sys.stderr)

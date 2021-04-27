@@ -51,11 +51,14 @@ mlask(end="\n")
 # ml configure bing to update key
 # ----------------------------------------------------------------------
 try:
-    location = geocode("Priceline Pharmacy Albany Creek", BING_MAPS_KEY, "0", "5", False)
+    location = geocode(["Priceline Pharmacy Albany Creek"], BING_MAPS_KEY, "0", "5", False)
+
 except Exception as e:
     print("The bing map key is not correct. Please run ml configure bing to update your key.", file=sys.stderr)
     sys.exit(1)
 
+location = location[0][0]
+out = location.split(",")
 
-print("Latitude: "+str(location[0][0])+" Longitude: "+str(location[0][1]))
+print("Latitude: "+out[0]+" Longitude: "+out[1])
 
