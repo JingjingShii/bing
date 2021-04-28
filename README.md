@@ -25,6 +25,9 @@ The Bing Map source code is available from
 $ ml geocode bing back creek
 $ ml geocode bing back creek --maxres 3
 $ ml geocode bing back creek --inclnb 1
+$ ml geocode bing back reek --verbose True
+$ ml geocode bing back reek --google True
+$ ml geocode bing back reek --to out.csv
 ```
 
 ## Usage
@@ -44,7 +47,7 @@ $ ml geocode bing back creek --inclnb 1
 		
 - Command line tools:
 
-		$ ml geocode bing [(location) <location>] [(--inclnb) <Include the neighborhood>] [(--maxres) <Maximun number of locations to return>]
+		$ ml geocode bing [(location) <location or csv file>] [(--inclnb) <Include the neighborhood>] [(--maxres) <Maximun number of locations to return>] [(--google) <Show the location in the Google Map>] [(--to) <Output as the csv file>] [(--verbose) <Print out the results>]
     
 ## Command Line Tools
 
@@ -54,19 +57,28 @@ of useful command line tools.
 ### *geocode*
 
 The *geocode* command will generate a list of coordinate pairs for the provided
-location. Each coordinate pair includes latitude and longitude. If the provided
+location or csv file. Each coordinate pair includes latitude and longitude. If the provided
 location is specific, the result will be a list with one element. If the location
 is ambiguous, such as a duplicate name in Australia, a list with several elements 
 will be shown. It has the option to specify the maximum number of coordinates to 
 return in the response. The number is between 1-20, and the default is 5. Also,
 this service provides the option to include the neighborhood with the address
 information when it is available. The default is 0 (Do not include neighborhood
-information).
+information). We provide --google option to show the location in the Google Map 
+via link. We also provide --verbose to print out the result and --to to store the 
+output in csv file. 
+
+**Note**: For the input CSV file, we only accept the CSV files that don't have a title and
+each location in a single row. As for the output CSV, each location's result will be in one
+row. 
 
 ```console
 $ ml geocode bing PriceLine Pharmacy Albany Creek
 $ ml geocode bing back reek --maxres 3
 $ ml geocode bing back reek --inclnb 1
+$ ml geocode bing back reek --verbose True
+$ ml geocode bing back reek --google True
+$ ml geocode bing back reek --to out.csv
 ```
 
 ## Demonstration
