@@ -73,34 +73,34 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Running Bing Map.')
 
-    parser.add_argument('address', type=str, nargs='+',
+    parser.add_argument('address', type=str, nargs='*',
                         help='The location that want to query.')
-    parser.add_argument('--inclnb', '-i', type=int, default=0, required=False,
+    parser.add_argument('--inclnb', type=int, default=0, required=False,
                         help='Include the neighborhood with the address information. 0 or 1. ')
-    parser.add_argument('--maxres', '-m', type=int, default=5, required=False,
+    parser.add_argument('--maxres', type=int, default=5, required=False,
                         help='Maximun number of locations to return. The value is between 1-20.')
-    parser.add_argument('--google', '-g', type=bool,
+    parser.add_argument('--google', type=bool,
                         help='Show the location in the Google Map.')
-    parser.add_argument('--to', '-t', type=str,
+    parser.add_argument('--to', type=str,
                         help='Output csv file path. ')
-    parser.add_argument('--verbose', '-v', type=bool,
+    parser.add_argument('--verbose', type=bool,
                         help='Print out the result.')
     args = parser.parse_args()
 
     address = " ".join(args.address)
-
-    # If the input is a csv file
 
     path = os.path.join(get_cmd_cwd(), address)
 
     location_list = []
 
     if os.path.exists(path):
+        # If input is a csv file
         with open(path) as f:
             cf = csv.reader(f)
             for row in cf:
                 location_list.append(row[0])
     else:
+        # If input is a location string
         location_list.append(address)
 
     try:
