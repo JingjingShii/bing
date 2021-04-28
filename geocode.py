@@ -94,7 +94,7 @@ if __name__ == "__main__":
     location_list = []
 
     if os.path.exists(address):
-        with open("/Users/Jingjing/Desktop/test.csv") as f:
+        with open(address) as f:
             cf = csv.reader(f)
             for row in cf:
                 location_list.append(row[0])
