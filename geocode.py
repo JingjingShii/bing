@@ -4,7 +4,7 @@ import json
 import os
 import argparse
 import csv
-
+from mlhub.utils import get_cmd_cwd
 
 # ----------------------------------------------------------------------
 # The geocoding function that generates a list of potential latitude and longitude
@@ -91,10 +91,12 @@ if __name__ == "__main__":
 
     # If the input is a csv file
 
+    path = os.path.join(get_cmd_cwd(), address)
+
     location_list = []
 
-    if os.path.exists(address):
-        with open(address) as f:
+    if os.path.exists(path):
+        with open(path) as f:
             cf = csv.reader(f)
             for row in cf:
                 location_list.append(row[0])
@@ -106,8 +108,8 @@ if __name__ == "__main__":
 
         # If the output file name is given
         if args.to:
-            to_path = os.path.join(os.getcwd(), args.to)
-            with open(to_path, 'w', newline='') as file:
+            to = os.path.join(get_cmd_cwd(), args.to)
+            with open(to, 'w', newline='') as file:
                 writer = csv.writer(file)
                 for item in result:
                     writer.writerow(item)
@@ -115,11 +117,8 @@ if __name__ == "__main__":
         # If the users want to print out the result
         if args.verbose:
             for item in result:
-                print(item)
+                print(', '.join(item))
 
     except Exception as e:
         print("The bing map key is not correct. Please run ml configure bing to update your key", file=sys.stderr)
         sys.exit(1)
-
-    # Print the latitude and longitude coordinates
-    # print(location)
