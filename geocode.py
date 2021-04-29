@@ -4,7 +4,7 @@ import json
 import os
 import argparse
 import csv
-from mlhub.utils import get_cmd_cwd
+from mlhub.utils import get_cmd_cwd, get_private
 
 # ----------------------------------------------------------------------
 # The geocoding function that generates a list of potential latitude and longitude
@@ -55,18 +55,13 @@ if __name__ == "__main__":
 
     # private file stores credentials including the Bing Maps key required by the geocoding function
     PRIVATE_FILE = "private.json"
-    path = os.path.join(os.getcwd(), PRIVATE_FILE)
+    path = os.path.join(get_cmd_cwd, PRIVATE_FILE)
 
-    if os.path.exists(path):
-        with open(path) as f:
-            private = json.load(f)
-    else:
-        print("Please run ml configure bing to paste your key.", file=sys.stderr)
-        sys.exit(1)
+    private_dic = get_private(path, "bing")
 
     # Read Bing Maps key from private file for authentication through Bing Maps API
-    if "key" in private:
-        BING_MAPS_KEY = private["key"]
+    if "key" in private_dic:
+        BING_MAPS_KEY = private_dic["key"]
     else:
         print("There is no key in private.json. Please run ml configure bing to upload your key.", file=sys.stderr)
         sys.exit(1)
