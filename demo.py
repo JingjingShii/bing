@@ -3,6 +3,7 @@ import os
 from mlhub.pkg import ask_password
 from geocode import geocode
 from mlhub.pkg import mlask, mlcat
+from mlhub.utils import get_private
 import sys
 
 mlcat("Bing Map", """\
@@ -22,16 +23,11 @@ PRIVATE_FILE = "private.json"
 
 path = os.path.join(os.getcwd(), PRIVATE_FILE)
 
-if os.path.exists(path):
-    with open(path) as f:
-        private = json.load(f)
-else:
-    print("Please run ml configure bing to upload your key.", file=sys.stderr)
-    sys.exit(1)
+private_dic = get_private(path, "bing")
 
 # Read Bing Maps key from private file for authentication through Bing Maps API
-if "key" in private:
-    BING_MAPS_KEY = private["key"]
+if "key" in private_dic:
+    BING_MAPS_KEY = private_dic["key"]
 else:
     print("There is no key in private.json. Please run ml configure bing to upload your key.", file=sys.stderr)
     sys.exit(1)

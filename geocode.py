@@ -55,7 +55,7 @@ if __name__ == "__main__":
 
     # private file stores credentials including the Bing Maps key required by the geocoding function
     PRIVATE_FILE = "private.json"
-    path = os.path.join(get_cmd_cwd, PRIVATE_FILE)
+    path = os.path.join(os.getcwd(), PRIVATE_FILE)
 
     private_dic = get_private(path, "bing")
 
