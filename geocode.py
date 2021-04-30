@@ -78,7 +78,7 @@ if __name__ == "__main__":
                         help='Show the location in the Google Map.')
     parser.add_argument('--to', '-t', type=str,
                         help='Output csv file path. ')
-    parser.add_argument('--verbose', '-ver', type=bool,
+    parser.add_argument('--verbose', '-b', type=bool,
                         help='Print out the result.')
     args = parser.parse_args()
 
