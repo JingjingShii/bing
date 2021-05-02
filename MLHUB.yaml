@@ -6,11 +6,11 @@ meta:
   version      : 0.1.0
   languages    : py
   license      : mit
-  author       : Jingjing.Shi@anu.edu.au, Graham.Williams@anu.edu.au
+  author       : Jingjing.Shi@anu.edu.au, Graham.Williams@anu.edu.au, Haotian.Weng
   url          : https://github.com/JingjingShii/bing
   private      : Bing Map, key*
-dependencies:
 
+dependencies:
   files:
     - README.md
     - demo.py
