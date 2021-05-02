@@ -79,6 +79,8 @@ $ ml geocode bing back reek --inclnb 1
 $ ml geocode bing back reek --verbose True
 $ ml geocode bing back reek --google True
 $ ml geocode bing back reek --to out.csv
+
+$ brave-browser `ml geocode bing --max=1 --osm albany creek`
 ```
 
 ## Demonstration
