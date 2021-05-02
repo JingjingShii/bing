@@ -81,6 +81,8 @@ $ ml geocode bing back reek --google True
 $ ml geocode bing back reek --to out.csv
 
 $ brave-browser `ml geocode bing --max=1 --osm albany creek`
+
+$ brave-browser `ml geocode bing bunnings mentone 23-27 nepean hwy mentone vic 3194 --osm`
 ```
 
 ## Demonstration
