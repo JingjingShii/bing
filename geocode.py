@@ -6,7 +6,7 @@ import argparse
 from mlhub.utils import get_private
 
 
-def geocode(address, key, nhood=False, max=1, url=None):
+def geocode(address, key, nhood=0, max=5, url=None):
     """Generate potential latitude and longitude coordinates.
 
     Arguments
@@ -16,7 +16,7 @@ def geocode(address, key, nhood=False, max=1, url=None):
 
     key (str) The bing maps key.
 
-    nhood (bool) Whether to include the neighbourhood.
+    nhood (0/1) Whether to include the neighbourhood.
 
     max (int) The maximum number of matches.
 
@@ -38,7 +38,7 @@ def geocode(address, key, nhood=False, max=1, url=None):
     API_URL = (
         "http://dev.virtualearth.net/REST/v1/Locations?culture=" +
         f"en-AU&query={address}&inclnb={nhood}&include=" +
-        f"queryParse&maxResults={max}&userRegion=AU&key=" +
+        f"queryParse&maxResults={max}&key=" +
         f"{key}")
 
     # Get JSON response from Bing Maps API.
@@ -72,10 +72,10 @@ def geocode(address, key, nhood=False, max=1, url=None):
                     loc += f"?q={latitude},{longitude}"
                 else:
                     loc = "http://www.openstreetmap.org/"
-                    loc += f"?mlat={latitude}&mlon={longitude}&zoom=12"
+                    loc += f"?mlat={latitude}&mlon={longitude}&zoom=18"
             else:
                 loc = f'{latitude}:{longitude},{bbox},'
-                loc += f"{confidence},{etype},{code},{address}"
+                loc += f"{confidence},{code},{etype},{address}"
 
             result.append(loc)
 
@@ -117,6 +117,7 @@ if __name__ == "__main__":
 
     parser.add_argument(
         '--neighbourhood', '-n',
+        action="store_true",
         help='include neighbourhood of the address.')
 
     parser.add_argument(
