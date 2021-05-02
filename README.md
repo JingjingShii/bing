@@ -74,11 +74,8 @@ row.
 
 ```console
 $ ml geocode bing PriceLine Pharmacy Albany Creek
-$ ml geocode bing back reek --maxres 3
-$ ml geocode bing back reek --inclnb 1
-$ ml geocode bing back reek --verbose True
-$ ml geocode bing back reek --google True
-$ ml geocode bing back reek --to out.csv
+$ ml geocode bing back creek --max=3
+$ ml geocode bing back creek --inclnb 1
 
 $ brave-browser `ml geocode bing --max=1 --osm albany creek`
 
