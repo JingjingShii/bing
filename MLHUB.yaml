@@ -3,7 +3,7 @@ meta:
   name         : bing
   title        : Bing Map
   keywords     : bing map, location
-  version      : 0.1.1
+  version      : 0.1.2
   languages    : py
   license      : mit
   author       : Jingjing.Shi@anu.edu.au, Graham.Williams@anu.edu.au, Haotian.Weng
