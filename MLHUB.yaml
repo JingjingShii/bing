@@ -7,7 +7,7 @@ meta:
   languages    : py
   license      : mit
   author       : Jingjing.Shi@anu.edu.au, Graham.Williams@anu.edu.au, Haotian.Weng
-  url          : https://github.com/JingjingShii/bing
+  url          : https://github.com/gjwgit/bing
   private      : Bing Map, key*
 
 dependencies:
