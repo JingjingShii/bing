@@ -38,7 +38,7 @@ else:
     sys.exit(1)
 
 
-mlcat("GEOCODE", """
+mlcat("GEOCODE", """\
 This part is to generate the latitude and longitude coordinates based
 on the query. The result might be several. Here we set the query to
 Priceline Pharmacy Albany Creek. In this case, it will generate a pair
