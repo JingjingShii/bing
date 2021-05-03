@@ -6,9 +6,9 @@ from mlhub.pkg import mlask, mlcat
 from mlhub.utils import get_private
 
 mlcat("Bing Map", """\
-Welcome to Bing Maps REST service. This service can find the latitude
-and longitude coordinates that correspond to location information provided
-as a query string.
+Welcome to Bing Maps REST service. This service can identify the latitude
+and longitude coordinates that correspond to the supplied location/address
+information.
 """)
 
 mlask(end="\n")
@@ -39,10 +39,14 @@ else:
 
 
 mlcat("GEOCODE", """\
-This part is to generate the latitude and longitude coordinates based
-on the query. The result might be several. Here we set the query to
-Priceline Pharmacy Albany Creek. In this case, it will generate a pair
-of coordinates.
+Here's an example. We provide the location
+
+    Priceline Pharmacy Albany Creek
+
+and Bing will attempt to match this using its extensive map data.
+The result includes the logitude, latitude, and neighbourhood bounding
+box, how good the match is, the type of the location, and a clean
+address.
 """)
 
 mlask(end="\n")
@@ -67,6 +71,12 @@ bbox = out[1]
 
 print(f"Latitude:  {latlong[0]}\nLongitude: {latlong[1]}\n")
 print(f"Bounding Box: {out[1]}\n")
-print(f"Confidence: {out[2]}\n\nCode: {out[3]}\n\nType: {out[4]}\n")
+print(f"Confidence: {out[2]}; Code: {out[3]}\n\nType: {out[4]}\n")
 print(f"Address: {','.join(out[5:])}")
 print("")
+
+mlcat("NEXT", """\
+You can use the 'geocode' command to obtain this output for yourself.
+
+      $ ml geocode bing Priceline Pharmacy Albany Creek
+""")
