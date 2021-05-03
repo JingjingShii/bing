@@ -65,8 +65,8 @@ def geocode(address, key, nhood=0, max=5, url=None):
 
             if url:
                 if url == "bing":
-                    loc = "https://bing.com/maps"
-                    loc += f"?cp={latitude}~{longitude}&lvl=12&style=b"
+                    loc = "https://maps.bing.com/"
+                    loc += f"?cp={latitude}~{longitude}&lvl=18&style=r"
                 elif url == "google":
                     loc = "https://maps.google.com/"
                     loc += f"?q={latitude},{longitude}"
