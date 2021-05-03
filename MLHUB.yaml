@@ -18,5 +18,6 @@ dependencies:
 
 commands:
   demo       : Demonstrate bing map.
-  geocode    : Generate latitude and longitude coordinates for location. Supports address, --inclnb and --maxres
+  geocode    : Generate latitude and longitude and other information for supplied address.
+  
 
