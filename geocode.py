@@ -4,7 +4,8 @@ import json
 import os
 import argparse
 import csv
-from mlhub.utils import get_cmd_cwd, get_private
+from mlhub.pkg import get_cmd_cwd
+from utils import request_priv_info
 
 # ----------------------------------------------------------------------
 # The geocoding function that generates a list of potential latitude and longitude
@@ -52,19 +53,7 @@ def geocode(address, bing_map_key, inclnb="0", maxres="1", google=False):
 
 
 if __name__ == "__main__":
-
-    # private file stores credentials including the Bing Maps key required by the geocoding function
-    PRIVATE_FILE = "private.json"
-    path = os.path.join(os.getcwd(), PRIVATE_FILE)
-
-    private_dic = get_private(path, "bing")
-
-    # Read Bing Maps key from private file for authentication through Bing Maps API
-    if "key" in private_dic:
-        BING_MAPS_KEY = private_dic["key"]
-    else:
-        print("There is no key in private.json. Please run ml configure bing to upload your key.", file=sys.stderr)
-        sys.exit(1)
+    key = request_priv_info()
 
     parser = argparse.ArgumentParser(description='Running Bing Map.')
 
@@ -99,7 +88,7 @@ if __name__ == "__main__":
         location_list.append(address)
 
     try:
-        result = geocode(location_list, BING_MAPS_KEY, args.inclnb, args.maxres, args.google)
+        result = geocode(location_list, key, args.inclnb, args.maxres, args.google)
 
         # If the output file name is given
         if args.to:

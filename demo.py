@@ -3,7 +3,7 @@ import os
 from mlhub.pkg import ask_password
 from geocode import geocode
 from mlhub.pkg import mlask, mlcat
-from mlhub.utils import get_private
+from utils import request_priv_info
 import sys
 
 mlcat("Bing Map", """\
@@ -18,19 +18,7 @@ mlask(end="\n")
 # Setup
 # ----------------------------------------------------------------------
 
-# private file stores credentials including the Bing Maps key required by the geocoding function
-PRIVATE_FILE = "private.json"
-
-path = os.path.join(os.getcwd(), PRIVATE_FILE)
-
-private_dic = get_private(path, "bing")
-
-# Read Bing Maps key from private file for authentication through Bing Maps API
-if "key" in private_dic:
-    BING_MAPS_KEY = private_dic["key"]
-else:
-    print("There is no key in private.json. Please run ml configure bing to upload your key.", file=sys.stderr)
-    sys.exit(1)
+key = request_priv_info()
 
 
 mlcat("GEOCODE","""
@@ -47,7 +35,7 @@ mlask(end="\n")
 # ml configure bing to update key
 # ----------------------------------------------------------------------
 try:
-    location = geocode(["Priceline Pharmacy Albany Creek"], BING_MAPS_KEY, "0", "5", False)
+    location = geocode(["Priceline Pharmacy Albany Creek"], key, "0", "5", False)
 
 except Exception as e:
     print("The bing map key is not correct. Please run ml configure bing to update your key.", file=sys.stderr)

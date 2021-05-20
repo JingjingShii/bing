@@ -8,7 +8,8 @@ meta:
   license      : mit
   author       : Jingjing.Shi@anu.edu.au
   url          : https://github.com/JingjingShii/bing
-  private      : Bing Map, key*
+  private      :
+    Bing Map  : key*
 dependencies:
 
   files:
