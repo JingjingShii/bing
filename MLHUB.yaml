@@ -16,6 +16,7 @@ dependencies:
     - README.md
     - demo.py
     - geocode.py
+    - utils.py
 
 commands:
   demo       : Demonstrate bing map.
