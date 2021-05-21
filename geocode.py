@@ -71,8 +71,6 @@ if __name__ == "__main__":
                         help='Show the location in the Google Map.')
     parser.add_argument('--to', '-t', type=str,
                         help='Output csv file path. ')
-    parser.add_argument('--verbose', '-v', type=bool,
-                        help='Print out the result.')
     args = parser.parse_args()
 
     address = " ".join(args.address)
@@ -102,8 +100,7 @@ if __name__ == "__main__":
                 for item in result:
                     writer.writerow(item)
 
-        # If the users want to print out the result
-        if args.verbose:
+        else:
             for item in result:
                 print(', '.join(item))
 
