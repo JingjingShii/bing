@@ -3,7 +3,7 @@ import sys
 
 from geocode import geocode
 from mlhub.pkg import mlask, mlcat
-from mlhub.utils import get_private
+from utils import request_priv_info
 
 mlcat("Bing Map", """\
 Welcome to Bing Maps REST service. This service can identify the latitude
@@ -17,25 +17,7 @@ mlask(end="\n")
 # Setup
 # ----------------------------------------------------------------------
 
-# Private file stores credentials including the Bing Maps key required
-# by the geocoding function
-
-PRIVATE_FILE = "private.json"
-
-path = os.path.join(os.getcwd(), PRIVATE_FILE)
-
-private_dic = get_private(path, "bing")
-
-# Read Bing Maps key from private file for authentication through Bing
-# Maps API
-
-if "key" in private_dic:
-    BING_MAPS_KEY = private_dic["key"]
-else:
-    print("There is no key in private.json. " +
-          "Please run ml configure bing to upload your key.",
-          file=sys.stderr)
-    sys.exit(1)
+key = request_priv_info()
 
 
 mlcat("GEOCODE", """\
@@ -56,7 +38,7 @@ mlask(end="\n")
 # ml configure bing to update key
 # ----------------------------------------------------------------------
 try:
-    location = geocode("Priceline Pharmacy Albany Creek", BING_MAPS_KEY)
+    location = geocode(["Priceline Pharmacy Albany Creek"], key, "0", "5", False)
 
 except Exception as e:
     print(f"The bing map key is not correct: {e}\n" +
