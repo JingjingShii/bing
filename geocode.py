@@ -40,6 +40,10 @@ def geocode(address, bing_map_key, inclnb="0", maxres="1", google=False):
                 else:
                     cell = str(latitude) + "," + str(longitutde)
 
+                if inclnb:
+                    if "neighborhood" in item["address"]:
+                        cell = cell + "," + item["address"]["neighborhood"]
+
                 loc_res.append(cell)
 
         else:
