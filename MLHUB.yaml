@@ -1,4 +1,4 @@
---- # Azure Speech
+--- # Bing Geocode
 meta:
   name         : bing
   title        : Bing Map
@@ -8,13 +8,15 @@ meta:
   license      : mit
   author       : Jingjing.Shi@anu.edu.au, Graham.Williams@anu.edu.au, Haotian.Weng
   url          : https://github.com/gjwgit/bing
-  private      : Bing Map, key*
+  private      :
+    Bing Map  : key*
 
 dependencies:
   files:
     - README.md
     - demo.py
     - geocode.py
+    - utils.py
 
 commands:
   demo       : Demonstrate bing map.
