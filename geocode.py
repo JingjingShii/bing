@@ -2,8 +2,10 @@ import requests
 import sys
 import os
 import argparse
+import csv
 
-from mlhub.utils import get_private
+from mlhub.pkg import get_cmd_cwd
+from utils import request_priv_info
 
 
 def geocode(address, key, nhood=0, max=5, url=None):
@@ -81,31 +83,17 @@ def geocode(address, key, nhood=0, max=5, url=None):
 
     else:
         print("No locations identified from the provided address.")
-        sys.exit(1)
+        sys.exit("No locations identified from the provided address.")
 
     return result
 
 
 if __name__ == "__main__":
 
+    key = request_priv_info()
+
     # Private file stores the Bing Maps key required by the geocoding
     # function.
-
-    PRIVATE_FILE = "private.json"
-    path = os.path.join(os.getcwd(), PRIVATE_FILE)
-
-    private_dic = get_private(path, "bing")
-
-    # Read Bing Maps key from the private file for authentication
-    # through Bing Maps API.
-
-    if "key" in private_dic:
-        BING_MAPS_KEY = private_dic["key"]
-    else:
-        print(f"There is no key in '{PRIVATE_FILE}'.\n" +
-              "Please run 'ml configure bing' to enter your key.",
-              file=sys.stderr)
-        sys.exit(1)
 
     parser = argparse.ArgumentParser(description='Bing Maps')
 
@@ -155,11 +143,9 @@ if __name__ == "__main__":
         "google" if args.google else None
 
     try:
-        result = geocode(address, BING_MAPS_KEY, nhood, max, url)
+        result = geocode(address, key, nhood, max, url)
         print("\n".join(result))
 
     except Exception as e:
-        print(f"The bing map key is invalid: {e}" +
-              "\nRun 'ml configure bing' to update the key.",
-              file=sys.stderr)
-        sys.exit(1)
+        sys.exit(f"The bing map key is invalid: {e}" +
+                 "\nRun 'ml configure bing' to update the key.")
