@@ -25,7 +25,6 @@ The Bing Map source code is available from
 $ ml geocode bing back creek
 $ ml geocode bing back creek --maxres 3
 $ ml geocode bing back creek --inclnb 1
-$ ml geocode bing back reek --verbose True
 $ ml geocode bing back reek --google True
 $ ml geocode bing back reek --to out.csv
 ```
@@ -47,7 +46,7 @@ $ ml geocode bing back reek --to out.csv
 		
 - Command line tools:
 
-		$ ml geocode bing [(location) <location or csv file>] [(--inclnb) <Include the neighborhood>] [(--maxres) <Maximun number of locations to return>] [(--google) <Show the location in the Google Map>] [(--to) <Output as the csv file>] [(--verbose) <Print out the results>]
+		$ ml geocode bing [(location) <location or csv file>] [(--inclnb) <Include the neighborhood>] [(--maxres) <Maximun number of locations to return>] [(--google) <Show the location in the Google Map>] [(--to) <Output as the csv file>]
     
 ## Command Line Tools
 
@@ -65,20 +64,28 @@ return in the response. The number is between 1-20, and the default is 5. Also,
 this service provides the option to include the neighborhood with the address
 information when it is available. The default is 0 (Do not include neighborhood
 information). We provide --google option to show the location in the Google Map 
-via link. We also provide --verbose to print out the result and --to to store the 
-output in csv file. 
+via link. We also provide --to to store the output in csv file. If users use --to, 
+the result will not be printed out otherwise, the result will show in the command.
 
-**Note**: For the input CSV file, we only accept the CSV files that don't have a title and
-each location in a single row. As for the output CSV, each location's result will be in one
+Not every location has neighborhood, the system will print available neighborhood if --inclnb 
+is 1. 
+
+**Note**: For the input CSV file, we only accept the CSV files that don't have titles and
+each location is in a single row. As for the output CSV, each location's result will be in one
 row. 
 
 ```console
 $ ml geocode bing PriceLine Pharmacy Albany Creek
 $ ml geocode bing back reek --maxres 3
 $ ml geocode bing back reek --inclnb 1
-$ ml geocode bing back reek --verbose True
 $ ml geocode bing back reek --google True
 $ ml geocode bing back reek --to out.csv
+```
+
+```console
+$ ml geocode bing  Ballard, WA, --google True --inclnb 1
+
+"47.669593811035156,-122.38619995117188,https://maps.google.com/?q=47.669593811035156,-122.38619995117188,Ballard", "47.675296783447266,-122.38217163085938,https://maps.google.com/?q=47.675296783447266,-122.38217163085938,Ballard"
 ```
 
 ## Demonstration
