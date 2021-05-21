@@ -24,33 +24,36 @@ def geocode(address, bing_map_key, inclnb="0", maxres="1", google=False):
         # Get JSON response from Bing Maps API
         response = requests.get(API_URL).json()
 
-        # If the estimatedTotal is 1 or more than 1
-        if response["resourceSets"][0]['estimatedTotal'] > 0:
+        if len(response["resourceSets"]) > 0:
 
-            loc_inform = response["resourceSets"][0]["resources"]
+            # If the estimatedTotal is 1 or more than 1
+            if response["resourceSets"][0]['estimatedTotal'] > 0:
 
-            cell = ""
-            for item in loc_inform:
-                latitude = item["point"]["coordinates"][0]
-                longitutde = item["point"]["coordinates"][1]
+                loc_inform = response["resourceSets"][0]["resources"]
 
-                if google:
-                    link = f"https://maps.google.com/?q={latitude},{longitutde}"
-                    cell = str(latitude) + "," + str(longitutde) + "," + link
-                else:
-                    cell = str(latitude) + "," + str(longitutde)
+                cell = ""
+                for item in loc_inform:
+                    latitude = item["point"]["coordinates"][0]
+                    longitutde = item["point"]["coordinates"][1]
 
-                if inclnb:
-                    if "neighborhood" in item["address"]:
-                        cell = cell + "," + item["address"]["neighborhood"]
+                    if google:
+                        link = f"https://maps.google.com/?q={latitude},{longitutde}"
+                        cell = str(latitude) + "," + str(longitutde) + "," + link
+                    else:
+                        cell = str(latitude) + "," + str(longitutde)
 
-                loc_res.append(cell)
+                    if inclnb:
+                        if "neighborhood" in item["address"]:
+                            cell = cell + "," + item["address"]["neighborhood"]
 
+                    loc_res.append(cell)
+
+            else:
+                sys.exit(
+                    "No coordinates can be queried for this location. Please make sure you have the correct location.")
         else:
-            print(
-                "No coordinates can be queried for this location. Please make sure you have the correct location.")
-            sys.exit(1)
-
+            sys.exit(" ".join(response["errorDetails"])+"\n"
+                                                        "Please run ml configure bing to update your key.")
         result.append(loc_res)
 
     return result
@@ -89,21 +92,17 @@ if __name__ == "__main__":
         # If input is a location string
         location_list.append(address)
 
-    try:
-        result = geocode(location_list, key, args.inclnb, args.maxres, args.google)
 
-        # If the output file name is given
-        if args.to:
-            to = os.path.join(get_cmd_cwd(), args.to)
-            with open(to, 'w', newline='') as file:
-                writer = csv.writer(file)
-                for item in result:
-                    writer.writerow(item)
+    result = geocode(location_list, key, args.inclnb, args.maxres, args.google)
 
-        else:
+    # If the output file name is given
+    if args.to:
+        to = os.path.join(get_cmd_cwd(), args.to)
+        with open(to, 'w', newline='') as file:
+            writer = csv.writer(file)
             for item in result:
-                print(', '.join(item))
+                writer.writerow(item)
 
-    except Exception as e:
-        print("The bing map key is not correct. Please run ml configure bing to update your key", file=sys.stderr)
-        sys.exit(1)
+    else:
+        for item in result:
+            print(', '.join(item))
