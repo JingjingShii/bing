@@ -21,12 +21,12 @@ The Bing Map source code is available from
 ## Quick Start
 
 ```console
-
 $ ml geocode bing back creek
-$ ml geocode bing back creek --maxres 3
-$ ml geocode bing back creek --inclnb 1
-$ ml geocode bing back reek --google True
-$ ml geocode bing back reek --to out.csv
+$ ml geocode bing back creek --max=1
+$ ml geocode bing back creek --url
+$ ml geocode bing back creek --bing
+$ ml geocode bing back creek --google
+
 ```
 
 ## Usage
@@ -46,8 +46,13 @@ $ ml geocode bing back reek --to out.csv
 		
 - Command line tools:
 
-		$ ml geocode bing [(location) <location or csv file>] [(--inclnb) <Include the neighborhood>] [(--maxres) <Maximun number of locations to return>] [(--google) <Show the location in the Google Map>] [(--to) <Output as the csv file>]
-    
+		$ ml geocode bing [options] <address>
+		     -b            --bing               Generate Bing Maps URL.
+			 -g            --google             Generate Google Maps URL.
+			 -m <int>      --max=<int> 	        Maximum number of matches.
+			 -o            --osm                Generate Open Street Map URL.
+			 -u            --url                Generate Open Street Map URL.
+
 ## Command Line Tools
 
 In addition to the *demo* command below, the package provides a number
@@ -76,10 +81,14 @@ row.
 
 ```console
 $ ml geocode bing PriceLine Pharmacy Albany Creek
-$ ml geocode bing back reek --maxres 3
-$ ml geocode bing back reek --inclnb 1
-$ ml geocode bing back reek --google True
-$ ml geocode bing back reek --to out.csv
+
+$ ml geocode bing back creek --max=3
+$ ml geocode bing back creek --inclnb 1
+
+$ brave-browser `ml geocode bing --max=1 --osm albany creek`
+
+$ brave-browser `ml geocode bing bunnings mentone 23-27 nepean hwy mentone vic 3194 --osm`
+
 ```
 
 ```console

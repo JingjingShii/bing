@@ -1,17 +1,17 @@
---- # Azure Speech
+--- # Bing Geocode
 meta:
   name         : bing
   title        : Bing Map
   keywords     : bing map, location
-  version      : 0.0.1
+  version      : 0.1.4
   languages    : py
   license      : mit
-  author       : Jingjing.Shi@anu.edu.au
-  url          : https://github.com/JingjingShii/bing
+  author       : Jingjing.Shi@anu.edu.au, Graham.Williams@anu.edu.au, Haotian.Weng
+  url          : https://github.com/gjwgit/bing
   private      :
     Bing Map  : key*
-dependencies:
 
+dependencies:
   files:
     - README.md
     - demo.py
@@ -20,5 +20,6 @@ dependencies:
 
 commands:
   demo       : Demonstrate bing map.
-  geocode    : Generate latitude and longitude coordinates for location. Supports address, --inclnb and --maxres
+  geocode    : Generate latitude and longitude and other information for supplied address.
+  
 

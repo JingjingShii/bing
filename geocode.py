@@ -1,108 +1,151 @@
 import requests
 import sys
-import json
 import os
 import argparse
 import csv
+
 from mlhub.pkg import get_cmd_cwd
 from utils import request_priv_info
 
-# ----------------------------------------------------------------------
-# The geocoding function that generates a list of potential latitude and longitude
-# coordinates lists of the address
-# ----------------------------------------------------------------------
 
-def geocode(address, bing_map_key, inclnb="0", maxres="1", google=False):
+def geocode(address, key, nhood=0, max=5, url=None):
+    """Generate potential latitude and longitude coordinates.
+
+    Arguments
+    ---------
+
+    address (str) The address to look up.
+
+    key (str) The bing maps key.
+
+    nhood (0/1) Whether to include the neighbourhood.
+
+    max (int) The maximum number of matches.
+
+    url (str) Whether to return a URL string: None, Google, Bing, OSM.
+
+    Return
+    ------
+
+    string The matched information, comma separated:
+      lat:long,bbox,confidence,type,code,address
+    OR
+    string A URL ready to be used within a browser.
+    """
+
     result = []
-    for item in address:
-        loc_res = []
 
-        # Bing Maps API endpoint for Australian addresses
-        API_URL = (
-            f"http://dev.virtualearth.net/REST/v1/Locations?culture=en-AU&query={item}&inclnb={inclnb}&include=queryParse&maxResults={maxres}&userRegion=AU&key={bing_map_key}")
+    # Bing Maps API endpoint for Australian addresses.
 
-        # Get JSON response from Bing Maps API
-        response = requests.get(API_URL).json()
+    API_URL = (
+        "http://dev.virtualearth.net/REST/v1/Locations?culture=" +
+        f"en-AU&query={address}&inclnb={nhood}&include=" +
+        f"queryParse&maxResults={max}&key=" +
+        f"{key}")
 
-        if len(response["resourceSets"]) > 0:
+    # Get JSON response from Bing Maps API.
 
-            # If the estimatedTotal is 1 or more than 1
-            if response["resourceSets"][0]['estimatedTotal'] > 0:
+    response = requests.get(API_URL).json()
 
-                loc_inform = response["resourceSets"][0]["resources"]
+    # If the estimatedTotal is 1 or more than 1
 
-                cell = ""
-                for item in loc_inform:
-                    latitude = item["point"]["coordinates"][0]
-                    longitutde = item["point"]["coordinates"][1]
+    if response["resourceSets"][0]['estimatedTotal'] > 0:
 
-                    if google:
-                        link = f"https://maps.google.com/?q={latitude},{longitutde}"
-                        cell = str(latitude) + "," + str(longitutde) + "," + link
-                    else:
-                        cell = str(latitude) + "," + str(longitutde)
+        locations = response["resourceSets"][0]["resources"]
 
-                    if inclnb:
-                        if "neighborhood" in item["address"]:
-                            cell = cell + "," + item["address"]["neighborhood"]
+        loc = ""
 
-                    loc_res.append(cell)
+        for item in locations:
+            latitude = item["point"]["coordinates"][0]
+            longitude = item["point"]["coordinates"][1]
+            bbox = ":".join(map(str, item["bbox"]))
+            address = f'{item["address"]["formattedAddress"]}, '
+            address += f'{item["address"]["countryRegion"]}'
+            confidence = item["confidence"]
+            etype = item["entityType"]
+            code = ":".join(item["matchCodes"])
 
+            if url:
+                if url == "bing":
+                    loc = "https://maps.bing.com/"
+                    loc += f"?cp={latitude}~{longitude}&lvl=18&style=r"
+                elif url == "google":
+                    loc = "https://maps.google.com/"
+                    loc += f"?q={latitude},{longitude}"
+                else:
+                    loc = "http://www.openstreetmap.org/"
+                    loc += f"?mlat={latitude}&mlon={longitude}&zoom=18"
             else:
-                sys.exit(
-                    "No coordinates can be queried for this location. Please make sure you have the correct location.")
-        else:
-            sys.exit(" ".join(response["errorDetails"])+"\n"
-                                                        "Please run ml configure bing to update your key.")
-        result.append(loc_res)
+                loc = f'{latitude}:{longitude},{bbox},'
+                loc += f"{confidence},{code},{etype},{address}"
+
+            result.append(loc)
+
+    else:
+        print("No locations identified from the provided address.")
+        sys.exit("No locations identified from the provided address.")
 
     return result
 
 
 if __name__ == "__main__":
+
     key = request_priv_info()
 
-    parser = argparse.ArgumentParser(description='Running Bing Map.')
+    # Private file stores the Bing Maps key required by the geocoding
+    # function.
 
-    parser.add_argument('address', type=str, nargs='*',
-                        help='The location that want to query.')
-    parser.add_argument('--inclnb', '-i', type=int, default=0, required=False,
-                        help='Include the neighborhood with the address information. 0 or 1. ')
-    parser.add_argument('--maxres', '-m', type=int, default=5, required=False,
-                        help='Maximun number of locations to return. The value is between 1-20.')
-    parser.add_argument('--google', '-g', type=bool,
-                        help='Show the location in the Google Map.')
-    parser.add_argument('--to', '-t', type=str,
-                        help='Output csv file path. ')
+    parser = argparse.ArgumentParser(description='Bing Maps')
+
+    parser.add_argument(
+        'address',
+        type=str,
+        nargs='*',
+        help='location to geocode')
+
+    parser.add_argument(
+        '--neighbourhood', '-n',
+        action="store_true",
+        help='include neighbourhood of the address.')
+
+    parser.add_argument(
+        '--max', '-m',
+        type=int,
+        default=5,
+        help='maximun number of locations to return (1-20)')
+
+    parser.add_argument(
+        '--url', '-u',
+        action="store_true",
+        help='return map URL (Open Street Map)')
+
+    parser.add_argument(
+        '--osm', '-o',
+        action="store_true",
+        help='return Open Street Map map URL')
+
+    parser.add_argument(
+        '--bing', '-b',
+        action="store_true",
+        help='return Bing map URL')
+
+    parser.add_argument(
+        '--google', '-g',
+        action="store_true",
+        help='return Google map URL')
+
     args = parser.parse_args()
 
     address = " ".join(args.address)
+    nhood = 1 if args.neighbourhood else 0
+    max = args.max
+    url = "osm" if args.osm or args.url else "bing" if args.bing else \
+        "google" if args.google else None
 
-    path = os.path.join(get_cmd_cwd(), address)
+    try:
+        result = geocode(address, key, nhood, max, url)
+        print("\n".join(result))
 
-    location_list = []
-
-    if os.path.exists(path):
-        # If input is a csv file
-        with open(path) as f:
-            cf = csv.reader(f)
-            for row in cf:
-                location_list.append(row[0])
-    else:
-        # If input is a location string
-        location_list.append(address)
-
-
-    result = geocode(location_list, key, args.inclnb, args.maxres, args.google)
-
-    # If the output file name is given
-    if args.to:
-        to = os.path.join(get_cmd_cwd(), args.to)
-        with open(to, 'w', newline='') as file:
-            writer = csv.writer(file)
-            for item in result:
-                writer.writerow(item)
-
-    else:
-        for item in result:
-            print(', '.join(item))
+    except Exception as e:
+        sys.exit(f"The bing map key is invalid: {e}" +
+                 "\nRun 'ml configure bing' to update the key.")
