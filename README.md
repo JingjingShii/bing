@@ -93,8 +93,9 @@ $ ml geocode bing  Ballard, WA
 47.669593811035156:-122.38619995117188,47.659759521484375:-122.39840698242188:47.67599868774414:-122.3759994506836,High,Ambiguous,Neighborhood,Ballard, WA, United States
 47.675296783447266:-122.38217163085938,47.656524658203125:-122.4110336303711:47.697792053222656:-122.36068725585938,Medium,Ambiguous,Neighborhood,Ballard, WA, United States
 ```
-For each line, the first element is coordinates, the second element is bbox, the third
-is confidence, fourth is match code, fifth is entity Type and the sixth is address.
+For each line, the first element is coordinates, the second element is bounding
+box, the thirdis confidence, fourth is match code, fifth is entity Type and the 
+sixth is address.
 
 ## Demonstration
 ```console
