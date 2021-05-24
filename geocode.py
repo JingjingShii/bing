@@ -79,10 +79,14 @@ def geocode(address, key, nhood=0, max=5, url=None):
                 loc = f'{latitude}:{longitude},{bbox},'
                 loc += f"{confidence},{code},{etype},{address}"
 
+            if nhood:
+                if "neighborhood" in item["address"]:
+                    nei = item["address"]["neighborhood"]
+                    loc +=f",{nei}"
+
             result.append(loc)
 
     else:
-        print("No locations identified from the provided address.")
         sys.exit("No locations identified from the provided address.")
 
     return result
