@@ -43,10 +43,8 @@ try:
     location = geocode(["Priceline Pharmacy Albany Creek"], key, "0", "5", False)
 
 except Exception as e:
-    print(f"The bing map key is not correct: {e}\n" +
-          "Please run ml configure bing to update your key.",
-          file=sys.stderr)
-    sys.exit(1)
+    sys.exit(f"The bing map key is not correct: {e}\n" +
+          "Please run ml configure bing to update your key.",)
 
 location = location[0]
 out = location.split(",")
