@@ -47,11 +47,12 @@ $ ml geocode bing back creek --google
 - Command line tools:
 
 		$ ml geocode bing [options] <address>
-		     -b            --bing               Generate Bing Maps URL.
+		         -b            --bing               Generate Bing Maps URL.
 			 -g            --google             Generate Google Maps URL.
-			 -m <int>      --max=<int> 	        Maximum number of matches.
+			 -m <int>      --max=<int> 	    Maximum number of matches.
 			 -o            --osm                Generate Open Street Map URL.
 			 -u            --url                Generate Open Street Map URL.
+			 -n            --neighborhood       Include the neighborhood when it is available.
 
 ## Command Line Tools
 
