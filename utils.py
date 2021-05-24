@@ -10,8 +10,8 @@ def request_priv_info():
 
     path = os.path.join(os.getcwd(), PRIVATE_FILE)
 
-    private_dic = get_private(path, "bing")
+    values = get_private(path, "bing", "Bing Map")
 
-    key = private_dic["Bing Map"]["key"]
+    key = values[0]
 
     return key
