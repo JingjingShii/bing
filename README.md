@@ -26,6 +26,7 @@ $ ml geocode bing back creek --max=1
 $ ml geocode bing back creek --url
 $ ml geocode bing back creek --bing
 $ ml geocode bing back creek --google
+
 ```
 
 ## Usage
@@ -52,7 +53,6 @@ $ ml geocode bing back creek --google
 			 -o            --osm                Generate Open Street Map URL.
 			 -u            --url                Generate Open Street Map URL.
 
-
 ## Command Line Tools
 
 In addition to the *demo* command below, the package provides a number
@@ -69,21 +69,32 @@ return in the response. The number is between 1-20, and the default is 5. Also,
 this service provides the option to include the neighborhood with the address
 information when it is available. The default is 0 (Do not include neighborhood
 information). We provide --google option to show the location in the Google Map 
-via link. We also provide --verbose to print out the result and --to to store the 
-output in csv file. 
+via link. We also provide --to to store the output in csv file. If users use --to, 
+the result will not be printed out otherwise, the result will show in the command.
 
-**Note**: For the input CSV file, we only accept the CSV files that don't have a title and
-each location in a single row. As for the output CSV, each location's result will be in one
+Not every location has neighborhood, the system will print available neighborhood if --inclnb 
+is 1. 
+
+**Note**: For the input CSV file, we only accept the CSV files that don't have titles and
+each location is in a single row. As for the output CSV, each location's result will be in one
 row. 
 
 ```console
 $ ml geocode bing PriceLine Pharmacy Albany Creek
+
 $ ml geocode bing back creek --max=3
 $ ml geocode bing back creek --inclnb 1
 
 $ brave-browser `ml geocode bing --max=1 --osm albany creek`
 
 $ brave-browser `ml geocode bing bunnings mentone 23-27 nepean hwy mentone vic 3194 --osm`
+
+```
+
+```console
+$ ml geocode bing  Ballard, WA, --google True --inclnb 1
+
+"47.669593811035156,-122.38619995117188,https://maps.google.com/?q=47.669593811035156,-122.38619995117188,Ballard", "47.675296783447266,-122.38217163085938,https://maps.google.com/?q=47.675296783447266,-122.38217163085938,Ballard"
 ```
 
 ## Demonstration

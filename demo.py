@@ -5,6 +5,7 @@ from geocode import geocode
 from mlhub.pkg import mlask, mlcat
 from utils import request_priv_info
 
+
 mlcat("Bing Map", """\
 Welcome to Bing Maps REST service. This service can identify the latitude
 and longitude coordinates that correspond to the supplied location/address
@@ -24,6 +25,7 @@ mlcat("GEOCODE", """\
 Here's an example. We provide the location
 
     Priceline Pharmacy Albany Creek
+
 
 and Bing will attempt to match this using its extensive map data.
 The result includes the logitude, latitude, and neighbourhood bounding
