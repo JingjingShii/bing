@@ -116,7 +116,7 @@ if __name__ == "__main__":
         '--max', '-m',
         type=int,
         default=5,
-        help='maximun number of locations to return (1-20)')
+        help='maximum number of locations to return (1-20)')
 
     parser.add_argument(
         '--url', '-u',
