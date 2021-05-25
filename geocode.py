@@ -49,45 +49,54 @@ def geocode(address, key, nhood=0, max=5, url=None):
 
     # If the estimatedTotal is 1 or more than 1
 
-    if response["resourceSets"][0]['estimatedTotal'] > 0:
+    if len(response["resourceSets"]) > 0:
 
-        locations = response["resourceSets"][0]["resources"]
+        if response["resourceSets"][0]['estimatedTotal'] > 0:
 
-        loc = ""
+            locations = response["resourceSets"][0]["resources"]
 
-        for item in locations:
-            latitude = item["point"]["coordinates"][0]
-            longitude = item["point"]["coordinates"][1]
-            bbox = ":".join(map(str, item["bbox"]))
-            address = f'{item["address"]["formattedAddress"]}, '
-            address += f'{item["address"]["countryRegion"]}'
-            confidence = item["confidence"]
-            etype = item["entityType"]
-            code = ":".join(item["matchCodes"])
+            loc = ""
 
-            if url:
-                if url == "bing":
-                    loc = "https://maps.bing.com/"
-                    loc += f"?cp={latitude}~{longitude}&lvl=18&style=r"
-                elif url == "google":
-                    loc = "https://maps.google.com/"
-                    loc += f"?q={latitude},{longitude}"
+            for item in locations:
+                latitude = item["point"]["coordinates"][0]
+                longitude = item["point"]["coordinates"][1]
+                bbox = ":".join(map(str, item["bbox"]))
+                address = f'{item["address"]["formattedAddress"]}, '
+                address += f'{item["address"]["countryRegion"]}'
+                confidence = item["confidence"]
+                etype = item["entityType"]
+                code = ":".join(item["matchCodes"])
+
+                if url:
+                    if url == "bing":
+                        loc = "https://maps.bing.com/"
+                        loc += f"?cp={latitude}~{longitude}&lvl=18&style=r"
+                    elif url == "google":
+                        loc = "https://maps.google.com/"
+                        loc += f"?q={latitude},{longitude}"
+                    else:
+                        loc = "http://www.openstreetmap.org/"
+                        loc += f"?mlat={latitude}&mlon={longitude}&zoom=18"
                 else:
-                    loc = "http://www.openstreetmap.org/"
-                    loc += f"?mlat={latitude}&mlon={longitude}&zoom=18"
-            else:
-                loc = f'{latitude}:{longitude},{bbox},'
-                loc += f"{confidence},{code},{etype},{address}"
+                    loc = f'{latitude}:{longitude},{bbox},'
+                    loc += f"{confidence},{code},{etype},{address}"
 
-            if nhood:
-                if "neighborhood" in item["address"]:
-                    nei = item["address"]["neighborhood"]
-                    loc +=f",{nei}"
+                if nhood:
+                    if "neighborhood" in item["address"]:
+                        nei = item["address"]["neighborhood"]
+                        loc +=f",{nei}"
 
-            result.append(loc)
+                result.append(loc)
 
+        else:
+            sys.exit("No locations identified from the provided address.")
     else:
-        sys.exit("No locations identified from the provided address.")
+        error = response["errorDetails"]
+        errors = " ".join(error)
+        if "query: This parameter is missing or invalid." in errors:
+            sys.exit("The address parameter is required. ")
+        else:
+            sys.exit(errors)
 
     return result
 
