@@ -95,6 +95,9 @@ def geocode(address, key, nhood=0, max=5, url=None):
         errors = " ".join(error)
         if "query: This parameter is missing or invalid." in errors:
             sys.exit("The address parameter is required. ")
+        elif "Access was denied" in errors:
+            sys.exit(errors+
+                     "\nPlease run 'ml configure bing' to update the key. ")
         else:
             sys.exit(errors)
 
