@@ -4,8 +4,8 @@ import os
 import argparse
 import csv
 
-from mlhub.pkg import get_cmd_cwd
-from utils import request_priv_info
+from mlhub.pkg import get_private
+
 
 
 def geocode(address, key, nhood=0, max=5, url=None):
