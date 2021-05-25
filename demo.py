@@ -2,8 +2,7 @@ import os
 import sys
 
 from geocode import geocode
-from mlhub.pkg import mlask, mlcat
-from utils import request_priv_info
+from mlhub.pkg import mlask, mlcat, get_private
 
 
 mlcat("Bing Map", """\
@@ -18,7 +17,7 @@ mlask(end="\n")
 # Setup
 # ----------------------------------------------------------------------
 
-key = request_priv_info()
+key = get_private()
 
 
 mlcat("GEOCODE", """\
