@@ -17,7 +17,7 @@ mlask(end="\n")
 # Setup
 # ----------------------------------------------------------------------
 
-key = get_private()
+key = get_private()[0]
 
 
 mlcat("GEOCODE", """\

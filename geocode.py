@@ -94,7 +94,7 @@ def geocode(address, key, nhood=0, max=5, url=None):
 
 if __name__ == "__main__":
 
-    key = get_private()
+    key = get_private()[0]
 
     # Private file stores the Bing Maps key required by the geocoding
     # function.
