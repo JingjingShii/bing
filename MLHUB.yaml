@@ -1,8 +1,8 @@
 --- # Bing Geocode
 meta:
   name         : bing
-  title        : Bing Map
-  keywords     : bing map, location
+  title        : Bing Maps
+  keywords     : bing maps, map, location, spatial, geocode
   version      : 0.1.5
   languages    : py
   license      : mit
