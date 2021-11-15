@@ -1,15 +1,15 @@
 --- # Bing Geocode
 meta:
   name         : bing
-  title        : Bing Map
-  keywords     : bing map, location
-  version      : 0.1.4
+  title        : Bing Maps
+  keywords     : bing maps, map, location, spatial, geocode
+  version      : 0.1.5
   languages    : py
   license      : mit
   author       : Jingjing.Shi@anu.edu.au, Graham.Williams@anu.edu.au, Haotian.Weng
   url          : https://github.com/gjwgit/bing
   private      :
-    Bing Map  : key*
+    Bing Maps  : key*
 
 dependencies:
   files:

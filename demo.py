@@ -5,7 +5,7 @@ from geocode import geocode
 from mlhub.pkg import mlask, mlcat, get_private
 
 
-mlcat("Bing Map", """\
+mlcat("Bing Maps", """\
 Welcome to Bing Maps REST service. This service can identify the latitude
 and longitude coordinates that correspond to the supplied location/address
 information.
@@ -35,14 +35,14 @@ address.
 mlask(end="\n")
 
 # ----------------------------------------------------------------------
-# If the bing map key is not correct, the user needs to run
+# If the bing maps key is not correct, the user needs to run
 # ml configure bing to update key
 # ----------------------------------------------------------------------
 try:
     location = geocode(["Priceline Pharmacy Albany Creek"], key, "0", "5", False)
 
 except Exception as e:
-    sys.exit(f"The bing map key is not correct: {e}\n" +
+    sys.exit(f"The bing maps key is not correct: {e}\n" +
           "Please run ml configure bing to update your key.",)
 
 location = location[0]

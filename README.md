@@ -26,7 +26,7 @@ $ ml geocode bing back creek --max=1
 $ ml geocode bing back creek --url
 $ ml geocode bing back creek --bing
 $ ml geocode bing back creek --google
-
+$ brave-browser `ml geocode bing --max=1 --url albany creek`
 ```
 
 ## Usage
